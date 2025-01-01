@@ -2,6 +2,10 @@
 
 A PowerShell script to automate the installation of custom cursors on Windows.
 
+## Preview of the Cursor Scheme
+
+Sample screenshots of the `UwU` cursor scheme are available in the [Releases section](https://github.com/ajsem1337/CustomCursorInstaller/releases).
+
 ## Features
 
 - Copies cursor files to the appropriate system folder.
