@@ -21,7 +21,7 @@ A PowerShell script to automate the installation of custom cursors on Windows.
    Download the repository using:
 
    ```bash
-   git clone https://github.com/ajsem1337/CustomCursorSetup.git
+   git clone https://github.com/ajsem1337/CustomCursorInstaller.git
    ```
 
 2. **Run the script:**
