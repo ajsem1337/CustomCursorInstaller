@@ -16,22 +16,20 @@ A PowerShell script to automate the installation of custom cursors on Windows.
 
 ## Installation
 
-1. **Clone the repository:**
+1. **Download the files:**
 
-   Download the repository using:
-
-   ```bash
-   git clone https://github.com/ajsem1337/CustomCursorInstaller.git
-   ```
+   - Option 1: Download the ZIP from the [Releases](https://github.com/ajsem1337/CustomCursorInstaller/releases).
+   - Option 2: Clone the repository using:
+     ```bash
+     git clone https://github.com/ajsem1337/CustomCursorInstaller.git
+     ```
 
 2. **Run the script:**
 
    Open PowerShell as Administrator, navigate to the folder where the script is located, and run:
-
-   ```bash
-   cd path\to\CustomCursorSetup
+   ```powershell
+   cd path\to\CustomCursorInstaller
    .\InstallCursor.ps1
-   ```
 
 3. **Apply the scheme:**
 
@@ -39,11 +37,17 @@ A PowerShell script to automate the installation of custom cursors on Windows.
    Select the UwU scheme from the dropdown list and click OK.
    Alternatively, log out and log back in to allow the system to load the new scheme automatically.
 
-Notes
+## Notes
 
-    "Replace Scheme" dialog: If you see a prompt asking whether to overwrite the existing scheme, click Yes.
-    Scheme listed as None: After running the script, the scheme might appear as None in the settings, but the cursors are applied correctly. To make it active, select UwU manually from the dropdown.
-    Feedback welcome: If you know a way to fully solve the None issue, feel free to share your idea!
+- **"Replace Scheme" dialog:**  
+  If you see a prompt asking whether to overwrite the existing scheme, click **Yes**.
+
+- **Scheme listed as `None`:**  
+  After running the script, the scheme might appear as `None` in the settings, but the cursors are applied correctly.  
+
+- **Suggestions welcome:**  
+  If you know a way to fully solve the `None` issue, feel free to share your idea!
+
 
 Files
 
