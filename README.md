@@ -13,7 +13,6 @@ A PowerShell script to automate the installation of custom cursors on Windows.
 ## Requirements
 
 - PowerShell execution policy must allow running scripts (`ExecutionPolicy Bypass` recommended).
-
 - Windows 10/11.
 - PowerShell running as Administrator.
 
@@ -23,6 +22,7 @@ A PowerShell script to automate the installation of custom cursors on Windows.
 
    - Option 1: Download the ZIP from the [Releases](https://github.com/ajsem1337/CustomCursorInstaller/releases).
    - Option 2: Clone the repository using:
+
      ```bash
      git clone https://github.com/ajsem1337/CustomCursorInstaller.git
      ```
@@ -60,4 +60,4 @@ A PowerShell script to automate the installation of custom cursors on Windows.
 ## Files
 
 - `InstallCursor.ps1` – The script that installs the custom cursors.
-- `Cursor/` – The folder containing `.cur` and `.ani` cursor files.
+- `Cursor/` – The folder containing `.ani` cursor files.
