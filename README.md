@@ -35,18 +35,22 @@ A PowerShell script to automate the installation of custom cursors on Windows.
    powershell -ExecutionPolicy Bypass -File .\InstallCursor.ps1
    ```
 
-3. **Automatic scheme application:**
-   The script automatically applies the `UwU` scheme and opens the mouse settings panel.
+3. **Automatic scheme application**
 
-   If Windows still shows `None` as the selected scheme, simply click **OK** or **Apply** to confirm the settings.
+The script applies the `UwU` cursor scheme automatically.
+
+No additional user interaction is required.  
+The Mouse settings window is opened for preview only.
+
+Do NOT click **OK** or **Apply** — the scheme is already active and clicking these buttons may trigger a Windows prompt to overwrite the current scheme.
 
 ## Notes
 
 - **Cursor scheme now refreshes automatically**
   The script forces Windows to apply the new scheme without requiring a logout or reboot.
 
-- **"None" in the mouse settings?**
-  Even if Windows displays `None`, the cursors are applied correctly. You can manually reselect `UwU` from the dropdown if needed.
+- **Proper scheme registration**
+  The script registers the cursor scheme correctly in the Windows registry, so it appears normally in Mouse settings without showing `None`.
 
 - **Less intrusive error messages**
   The script minimizes unnecessary pop-ups, providing a smoother installation experience.
