@@ -1,53 +1,80 @@
 ﻿# -------------------------------------------------
-# This script sets the "UwU" cursor scheme by:
-# 1) Copying cursor files from the "Cursor" folder
-#    (in the same directory as the script) to
-#    "C:\Windows\Cursors\MyCustomCursors"
-# 2) Updating the Registry to apply them
-# 3) Forcing a refresh so the cursors apply immediately
+# Custom Cursor Installer - UwU scheme
+# -------------------------------------------------
+# 1) Copies cursor files from .\Cursor (script directory) to:
+#    C:\Windows\Cursors\MyCustomCursors
+# 2) Updates Registry to apply them
+# 3) Forces a refresh so the cursors apply immediately
 # -------------------------------------------------
 
+[CmdletBinding()]
+param(
+    # Keep old behavior: open Mouse Control Panel by default
+    [switch]$OpenControlPanel = $true
+)
+
+$ErrorActionPreference = "Stop"
+
+# [0] Admin check (README says admin required, so fail fast)
+# -------------------------------------------------
+$principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+if (-not $principal.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)) {
+    Write-Error "Run PowerShell as Administrator."
+    exit 1
+}
 
 # [1] Copy cursor files
 # -------------------------------------------------
-$sourceFolder = "$(Get-Location)\Cursor"
+$sourceFolder = Join-Path $PSScriptRoot "Cursor"
 $targetFolder = "C:\Windows\Cursors\MyCustomCursors"
+
+if (-not (Test-Path $sourceFolder)) {
+    Write-Error "Source folder not found: $sourceFolder"
+    exit 1
+}
 
 if (-Not (Test-Path $targetFolder)) {
     New-Item -ItemType Directory -Path $targetFolder | Out-Null
 }
 
-Write-Host "Copying cursors to $targetFolder..."
-Copy-Item -Path "$sourceFolder\*" -Destination $targetFolder -Recurse -Force
-
+Write-Host "Copying cursors from $sourceFolder to $targetFolder..."
+Copy-Item -Path (Join-Path $sourceFolder "*") -Destination $targetFolder -Force
 
 # [2] Map cursors and set Registry values
 # -------------------------------------------------
 $cursorMappings = @{
-    "Arrow"       = "$targetFolder\1 Normal Select.ani"
-    "Help"        = "$targetFolder\2 Help Select.ani"
-    "AppStarting" = "$targetFolder\3 Working in Background.ani"
-    "Wait"        = "$targetFolder\4 Busy.ani"
-    "Crosshair"   = "$targetFolder\5 Precision Select.ani"
-    "IBeam"       = "$targetFolder\6 Text Select.ani"
-    "NWPen"       = "$targetFolder\7 Handwriting.ani"
-    "No"          = "$targetFolder\8 Unavailable.ani"
-    "SizeNS"      = "$targetFolder\9 Vertical Resize.ani"
-    "SizeWE"      = "$targetFolder\10 Horizontal Resize.ani"
-    "SizeNWSE"    = "$targetFolder\11 Diagonal Resize 1.ani"
-    "SizeNESW"    = "$targetFolder\12 Diagonal Resize 2.ani"
-    "SizeAll"     = "$targetFolder\13 Move.ani"
-    "Hand"        = "$targetFolder\15 Link Select.ani"
-    "UpArrow"     = "$targetFolder\14 Alternate Select.ani"
-    "Pin"         = "$targetFolder\16 pin.ani"
-    "Person"      = "$targetFolder\17 person.ani"
+    "Arrow"       = (Join-Path $targetFolder "1 Normal Select.ani")
+    "Help"        = (Join-Path $targetFolder "2 Help Select.ani")
+    "AppStarting" = (Join-Path $targetFolder "3 Working in Background.ani")
+    "Wait"        = (Join-Path $targetFolder "4 Busy.ani")
+    "Crosshair"   = (Join-Path $targetFolder "5 Precision Select.ani")
+    "IBeam"       = (Join-Path $targetFolder "6 Text Select.ani")
+    "NWPen"       = (Join-Path $targetFolder "7 Handwriting.ani")
+    "No"          = (Join-Path $targetFolder "8 Unavailable.ani")
+    "SizeNS"      = (Join-Path $targetFolder "9 Vertical Resize.ani")
+    "SizeWE"      = (Join-Path $targetFolder "10 Horizontal Resize.ani")
+    "SizeNWSE"    = (Join-Path $targetFolder "11 Diagonal Resize 1.ani")
+    "SizeNESW"    = (Join-Path $targetFolder "12 Diagonal Resize 2.ani")
+    "SizeAll"     = (Join-Path $targetFolder "13 Move.ani")
+    "UpArrow"     = (Join-Path $targetFolder "14 Alternate Select.ani")
+    "Hand"        = (Join-Path $targetFolder "15 Link Select.ani")
+    "Pin"         = (Join-Path $targetFolder "16 pin.ani")
+    "Person"      = (Join-Path $targetFolder "17 person.ani")
+}
+
+# Validate files exist BEFORE touching registry
+$missing = foreach ($k in $cursorMappings.Keys) {
+    if (-not (Test-Path $cursorMappings[$k])) { "$k -> $($cursorMappings[$k])" }
+}
+if ($missing) {
+    Write-Error "Missing cursor files:`n$($missing -join "`n")"
+    exit 1
 }
 
 Write-Host "Setting system cursor paths..."
 foreach ($cursor in $cursorMappings.Keys) {
     Set-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name $cursor -Value $cursorMappings[$cursor]
 }
-
 
 # [3] Create and save the "UwU" scheme
 # -------------------------------------------------
@@ -57,49 +84,36 @@ if (-Not (Test-Path $schemePath)) {
     New-Item -Path $schemePath -Force | Out-Null
 }
 
+# WYCZYŚĆ STARY WPIS (żeby Windows nie trzymał starego, zepsutego stringa)
+Remove-ItemProperty -Path $schemePath -Name "UwU" -ErrorAction SilentlyContinue
+
 # Windows expects a specific order of these 17 entries
-$schemeValue = (
-    $cursorMappings["Arrow"] + "," +
-    $cursorMappings["Help"] + "," +
-    $cursorMappings["AppStarting"] + "," +
-    $cursorMappings["Wait"] + "," +
-    $cursorMappings["Crosshair"] + "," +
-    $cursorMappings["IBeam"] + "," +
-    $cursorMappings["NWPen"] + "," +
-    $cursorMappings["No"] + "," +
-    $cursorMappings["SizeNS"] + "," +
-    $cursorMappings["SizeWE"] + "," +
-    $cursorMappings["SizeNWSE"] + "," +
-    $cursorMappings["SizeNESW"] + "," +
-    $cursorMappings["SizeAll"] + "," +
-    $cursorMappings["UpArrow"] + "," +
-    $cursorMappings["Hand"] + "," +
-    $cursorMappings["Pin"] + "," +
-    $cursorMappings["Person"]
+$order = @(
+    "Arrow","Help","AppStarting","Wait","Crosshair","IBeam","NWPen","No",
+    "SizeNS","SizeWE","SizeNWSE","SizeNESW","SizeAll","UpArrow","Hand","Pin","Person"
 )
 
+# IMPORTANT: Do NOT quote paths in Schemes value. Windows may treat quotes as part of the path.
+$schemeValue = ($order | ForEach-Object { $cursorMappings[$_] }) -join ","
 Set-ItemProperty -Path $schemePath -Name "UwU" -Value $schemeValue
 
-# Set the active scheme to "UwU"
+# Set active scheme to "UwU" (use reg.exe for default value reliability)
 Write-Host "Activating the 'UwU' scheme..."
-Set-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(Default)" -Value "UwU"
+reg.exe add "HKCU\Control Panel\Cursors" /ve /d "UwU" /f | Out-Null
 
-
-# [4] Re-sync with the UI (sometimes not necessary, but safer)
+# [4] Re-sync with the UI (safer)
 # -------------------------------------------------
 Write-Host "Synchronizing cursor settings again..."
 foreach ($cursor in $cursorMappings.Keys) {
     Set-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name $cursor -Value $cursorMappings[$cursor]
 }
 
-
 # [5] Refresh settings – multiple variants
 # -------------------------------------------------
 Write-Host "Refreshing cursor settings (rundll32)..."
 Rundll32.exe user32.dll, UpdatePerUserSystemParameters
 
-# --- [Optional 1 - But here we keep it active] Stronger refresh via P/Invoke SPI_SETCURSORS ---
-# This forces a more thorough system update on some machines
+# Stronger refresh via P/Invoke SPI_SETCURSORS
 Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
@@ -110,26 +124,20 @@ public class NativeMethods {
 
     public static bool RefreshCursors() {
         // SPI_SETCURSORS = 0x57
-        // SPIF_SENDWININICHANGE = 0x02 (sends a system-wide notification)
+        // SPIF_SENDWININICHANGE = 0x02
         return SystemParametersInfo(0x57, 0, null, 0x02);
     }
 }
-"@
+"@ | Out-Null
 
 Write-Host "Refreshing cursor settings (SPI_SETCURSORS)..."
-[NativeMethods]::RefreshCursors()
+[NativeMethods]::RefreshCursors() | Out-Null
 
-
-# --- [Optional 2] Opening the Mouse Control Panel window ---
-# Sometimes just opening the mouse control panel helps Windows 
-# notice the new scheme (instead of showing None).
-Write-Host "Opening Control Panel (optional)..."
-Start-Process "rundll32.exe" -ArgumentList "shell32.dll,Control_RunDLL main.cpl @0,1"
-
-# --- [Optional 3] A short pause and another rundll32, if needed ---
-# Start-Sleep -Seconds 3
-# Rundll32.exe user32.dll, UpdatePerUserSystemParameters
-
+# Optional: open Mouse Control Panel
+if ($OpenControlPanel) {
+    Write-Host "Opening Control Panel (optional)..."
+    Start-Process "rundll32.exe" -ArgumentList "shell32.dll,Control_RunDLL main.cpl @0,1"
+}
 
 # [6] Final message
 # -------------------------------------------------
