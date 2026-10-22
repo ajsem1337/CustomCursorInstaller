@@ -1,0 +1,22 @@
+name: Windows installer checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shell: [powershell, pwsh]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check package and install twice
+        shell: ${{ matrix.shell }}
+        run: ./tests/Test-InstallCursor.ps1
