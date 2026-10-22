@@ -17,6 +17,11 @@ jobs:
         shell: [powershell, pwsh]
     steps:
       - uses: actions/checkout@v4
-      - name: Check package and install twice
-        shell: ${{ matrix.shell }}
+      - name: Check package and install twice (Windows PowerShell 5.1)
+        if: matrix.shell == 'powershell'
+        shell: powershell
+        run: ./tests/Test-InstallCursor.ps1
+      - name: Check package and install twice (PowerShell 7)
+        if: matrix.shell == 'pwsh'
+        shell: pwsh
         run: ./tests/Test-InstallCursor.ps1
