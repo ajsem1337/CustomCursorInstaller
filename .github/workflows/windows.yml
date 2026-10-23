@@ -16,7 +16,7 @@ jobs:
       matrix:
         shell: [powershell, pwsh]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Check package and install twice (Windows PowerShell 5.1)
         if: matrix.shell == 'powershell'
         shell: powershell
