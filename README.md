@@ -1,8 +1,8 @@
 # Custom Cursor Installer
 
-A PowerShell installer for the bundled **UwU** animated cursor scheme on Windows.
+![Made with AI](https://img.shields.io/badge/Made%20with-AI-76ddcf)
 
-**Made with AI.** This project was developed with AI assistance, including work on the installer and documentation.
+A PowerShell installer for the bundled **UwU** animated cursor scheme on Windows.
 
 ## Features
 
@@ -98,3 +98,7 @@ To check PowerShell syntax, compile the native interop code, and validate the bu
 - `.github/workflows/windows.yml` — automated Windows checks.
 
 Contributions and bug reports are welcome. Licensed under [MIT](LICENSE).
+
+## AI assistance
+
+**Made with AI.** This project was developed with AI assistance, including code, documentation, and testing.
