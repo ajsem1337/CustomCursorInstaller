@@ -1,6 +1,6 @@
 # Custom Cursor Installer
 
-![Made with AI](https://img.shields.io/badge/Made%20with-AI-76ddcf)
+![Made with AI](https://raw.githubusercontent.com/ajsem1337/ajsem1337/main/assets/made-with-ai.svg)
 
 A PowerShell installer for the bundled **UwU** animated cursor scheme on Windows.
 
@@ -24,7 +24,7 @@ Run as Administrator **with the account whose cursors you want to change**. The 
 
 1. Download and extract the complete project from [Releases](https://github.com/ajsem1337/CustomCursorInstaller/releases), or clone it:
 
-   ```bash
+   ```powershell
    git clone https://github.com/ajsem1337/CustomCursorInstaller.git
    ```
 
@@ -99,6 +99,6 @@ To check PowerShell syntax, compile the native interop code, and validate the bu
 
 Contributions and bug reports are welcome. Licensed under [MIT](LICENSE).
 
-## AI assistance
+---
 
-**Made with AI.** This project was developed with AI assistance, including code, documentation, and testing.
+<p align="center"><sub>Built by <a href="https://github.com/ajsem1337">ajsem</a> with AI assistance.</sub></p>
